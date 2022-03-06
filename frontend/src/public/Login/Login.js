@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import BitcoinLottieLogo from '../../components/lotties/bitcoinLottieLogo';
-import MinotaurLottieTitleLogo from '../../components/minotaurLottieTitleLogo';
+import MinotaurLottieTitleLogo from '../../components/lotties/minotaurLottieTitleLogo';
 import {doLogin} from '../../services/AuthService';
 
 function Login() {
