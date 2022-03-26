@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Link, useHistory} from 'react-router-dom';
-import BitcoinLottieLogo from '../../components/lotties/bitcoinLottieLogo';
+import Splash from '../../components/splash/Splash';
 import MinotaurLottieTitleLogo from '../../components/lotties/minotaurLottieTitleLogo';
 import {doLogin} from '../../services/AuthService';
 
@@ -8,13 +8,13 @@ function Login() {
 
     /* Splash */
 
-    const [loading, setSplash] = useState(false);
+    const [loadingSplash, setLoadingSplash] = useState(false);
 
     useEffect(() => {
-        setSplash(true);
+        setLoadingSplash(true);
         
         setTimeout(() => {
-            setSplash(false);
+            setLoadingSplash(false);
         }, 2500);
     }, []);
 
@@ -50,6 +50,7 @@ function Login() {
             })
             .catch(err => {
                 setError(err);
+                console.log(`Error: ${err}`)
             })
     };
 
@@ -58,11 +59,9 @@ function Login() {
             <section className="vh-lg-100 lg-0 bg-sort d-flex align-items-center">
 
             {
-                loading ? 
+                loadingSplash ? 
 
-                <div className='container login-splash'>
-                    <BitcoinLottieLogo></BitcoinLottieLogo>
-                </div>
+                <Splash></Splash>
 
                 :
                 
