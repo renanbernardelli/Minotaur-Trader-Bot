@@ -41,10 +41,11 @@ function Login() {
         event.preventDefault();
         
         doLogin(email, password)
-            .then(isValid => {
+            .then(response => {
 
-                if(isValid) {
-
+                if(response) {
+                    
+                    localStorage.setItem('token', response.token);
                     history.push('/settings');
                 }
             })
