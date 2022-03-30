@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const { doLogin, doLogout } = require('./controllers/authController');
 
-require('express-async-errors');
+const authController = require('./controllers/authController');
 
 const app = express();
 
@@ -12,27 +13,13 @@ app.use(helmet());
 
 app.use(express.json());
 
-app.post('/login', (req, res, next) => {
+/* Login */
 
-    const email =  req.body.email;
-    const password = req.body.password;
+app.post('/login', authController.doLogin);
 
-    if(email === 'test@test.com' && password === '123') {
+/* Logout */
 
-        res.status(200);
-        res.json('OK! Está dentro!')
-    }
-    else {
-        
-        res.status(401);
-        res.json('Error!');
-    }
-});
-
-app.post('/logout', (req, res, next) => {
-
-    res.status(200);
-});
+app.post('/logout', authController.doLogout);
 
 app.use('/', (req, res, next) => {
 
