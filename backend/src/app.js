@@ -1,9 +1,13 @@
 const express = require('express');
+const settingsController = require('./controllers/settingsController');
+const authController = require('./controllers/authController');
+const authMidllewere = require('./middlewares/authMiddlewere');
+
+
+require('express-async-errors');
+
 const cors = require('cors');
 const helmet = require('helmet');
-const { doLogin, doLogout } = require('./controllers/authController');
-
-const authController = require('./controllers/authController');
 
 const app = express();
 
@@ -16,6 +20,10 @@ app.use(express.json());
 /* Login */
 
 app.post('/login', authController.doLogin);
+
+/* Navigation */
+
+app.get('/settings', authMidllewere, settingsController.getSettings);
 
 /* Logout */
 
