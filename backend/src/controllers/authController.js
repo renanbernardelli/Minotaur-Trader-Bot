@@ -1,22 +1,32 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const settingsRepository = require('../repositories/settingsRepository');
 
-function doLogin(req, res, next) {
+async function doLogin(req, res, next) {
 
     const email = req.body.email;
     const password = req.body.password;
 
-    if(email === 'test@test.com' && bcrypt.compareSync(password, '$2a$12$dHphDe1IlJTg0Ss2.LKfBO9vo4CSo/h4UiHYtDdJ4j0O27Qrn0Nry')) {
+    const settings = await settingsRepository.getSettingsByEmail(email);
 
-        const token = jwt.sign({id: 1}, process.env.JWT_SECRET, {expiresIn: parseInt(process.env.JWT_EXPIRES)});
+    if(settings) {
 
-        res.json({token});
-    }
-    else {
+        const isValid = bcrypt.compareSync(password, settings.password);
+
+        if (isValid) {
+            
+            const token = jwt.sign({
+                id: settings.id
+            }, 
+                process.env.JWT_SECRET, {
+                expiresIn: parseInt(process.env.JWT_EXPIRES)
+            })
         
-        res.sendStatus(401);
-        res.json('Error!');
+            return res.json({token});
+        }
     }
+
+    res.status(401).send('401 Unauthorized');
 }
 
 const blackList = [];
@@ -27,7 +37,7 @@ function doLogout(req, res, next) {
     const token = req.headers['authorization'];
     blackList.push(token);
 
-    res.sendStatus(200);
+    return res.sendStatus(200);
 }
 
 function isBlackListed(token) {
